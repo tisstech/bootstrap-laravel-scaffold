@@ -1,0 +1,30 @@
+{
+    "name": "wfsneto/bootstrap-laravel-scaffold",
+    "description": "Fastest way to rapidly scaffold a laravel application",
+    "keywords": ["laravel", "package", "bootstrap", "scaffold", "command"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "wfsneto",
+            "email": "wfsneto@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "fzaninotto/faker": "v1.3.0"
+    },
+    "require-dev": {
+        "illuminate/support": "~4",
+        "illuminate/console": "~4",
+        "illuminate/filesystem": "~4"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Wfsneto\\BootstrapLaravelScaffold\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
