@@ -1,4 +1,4 @@
-<?php namespace Jrenton\LaravelScaffold;
+<?php namespace Wfsneto\BootstrapLaravelScaffold;
 
 class Relation
 {

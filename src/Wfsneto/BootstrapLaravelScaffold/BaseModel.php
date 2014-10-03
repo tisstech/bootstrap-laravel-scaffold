@@ -1,4 +1,4 @@
-<?php namespace Jrenton\LaravelScaffold;
+<?php namespace Wfsneto\BootstrapLaravelScaffold;
 
 
 class BaseModel
@@ -168,4 +168,4 @@ class BaseModel
         $namespace = $this->namespace ? $this->namespace . "\\" : "";
         return $namespace . $this->upper();
     }
-} 
+}

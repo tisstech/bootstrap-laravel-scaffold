@@ -1,4 +1,4 @@
-<?php namespace Jrenton\LaravelScaffold;
+<?php namespace Wfsneto\BootstrapLaravelScaffold;
 
 use Illuminate\Console\Command;
 
@@ -36,10 +36,10 @@ class FileCreator
      */
     public function createFunction($name, $content, $args = "", $type = "public")
     {
-        $fileContents = "\t$type function $name($args)\n";
-        $fileContents .= "\t{\n";
+        $fileContents = "    $type function $name($args)\n";
+        $fileContents .= "    {\n";
         $fileContents .= $content;
-        $fileContents .= "\t}\n\n";
+        $fileContents .= "    }\n\n";
 
         return $fileContents;
     }
@@ -115,7 +115,7 @@ class FileCreator
         $fileContents .= "$usesOutput";
         $fileContents .= "$type ". $className . " " . $extendsOutput . "\n{\n";
         foreach($vars as $type => $name) {
-            $fileContents .= "\t$type \$$name;\n";
+            $fileContents .= "    $type \$$name;\n";
         }
         $fileContents .= "\n";
         $fileContents .= $content;

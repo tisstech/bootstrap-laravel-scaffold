@@ -1,4 +1,4 @@
-<?php namespace Jrenton\LaravelScaffold;
+<?php namespace Wfsneto\BootstrapLaravelScaffold;
 
 use Illuminate\Console\Command;
 
@@ -101,7 +101,7 @@ class AssetDownloader
             $content = \File::get($this->configSettings['pathTo']['controllers'].'BaseController.php');
             if(strpos($content, "\$layout") === false)
             {
-                $content = preg_replace("/Controller {/", "Controller {\n\tprotected \$layout = '$layoutName';", $content);
+                $content = preg_replace("/Controller {/", "Controller {\n    protected \$layout = '$layoutName';", $content);
                 \File::put($this->configSettings['pathTo']['controllers'].'BaseController.php', $content);
             }
 
@@ -128,8 +128,7 @@ class AssetDownloader
 
                 \File::put($layoutPath, $this->fileContents);
             }
-            else
-            {
+            else {
                 $this->command->error('Layout file already exists!');
             }
         }
@@ -166,8 +165,7 @@ class AssetDownloader
                         if(!is_dir($foundationDir))
                             \File::makeDirectory($foundationDir);
                     }
-                    else
-                    {
+                    else {
                         $fp = fopen($foundationFile, "w");
                         if (zip_entry_open($zip, $zip_entry, "r"))
                         {
@@ -189,19 +187,18 @@ class AssetDownloader
                 rmdir($dirPath);
             }
 
-            $fileReplace = "\t<link href=\"{{ url('bootstrap/css/bootstrap.min.css') }}\" rel=\"stylesheet\">\n";
-            $fileReplace .= "\t<style>\n";
-            $fileReplace .= "\t\tbody {\n";
-            $fileReplace .= "\t\tpadding-top: 60px;\n";
-            $fileReplace .= "\t\t}\n";
-            $fileReplace .= "\t</style>\n";
-            $fileReplace .= "\t<link href=\"{{ url('bootstrap/css/bootstrap-theme.min.css') }}\" rel=\"stylesheet\">\n";
+            $fileReplace = "    <link href=\"{{ url('bootstrap/css/bootstrap.min.css') }}\" rel=\"stylesheet\">\n";
+            $fileReplace .= "    <style>\n";
+            $fileReplace .= "        body {\n";
+            $fileReplace .= "        padding-top: 60px;\n";
+            $fileReplace .= "        }\n";
+            $fileReplace .= "    </style>\n";
+            $fileReplace .= "    <link href=\"{{ url('bootstrap/css/bootstrap-theme.min.css') }}\" rel=\"stylesheet\">\n";
             $fileReplace .= "<!--[css]-->\n";
             $this->fileContents = str_replace("<!--[css]-->",  $fileReplace, $this->fileContents);
             $this->fileContents = str_replace("<!--[javascript]-->", "<script src=\"{{ url('bootstrap/js/bootstrap.min.js') }}\"></script>\n<!--[javascript]-->", $this->fileContents);
         }
-        else if($this->configSettings['downloads']['foundation'])
-        {
+        else if($this->configSettings['downloads']['foundation']) {
             $ch = curl_init("http://foundation.zurb.com/cdn/releases/foundation-5.2.2.zip");
             $fp = fopen("public/foundation.zip", "w");
 
@@ -241,7 +238,7 @@ class AssetDownloader
                 \File::deleteDirectory('public/js/vendor');
                 \File::move('public/js/foundation.min.js', 'public/js/foundation.js');
             }
-            $fileReplace = "\t<link href=\"{{ url ('css/foundation.min.css') }}\" rel=\"stylesheet\">\n<!--[css]-->";
+            $fileReplace = "    <link href=\"{{ url ('css/foundation.min.css') }}\" rel=\"stylesheet\">\n<!--[css]-->";
             $this->fileContents = str_replace("<!--[css]-->",  $fileReplace, $this->fileContents);
             $this->fileContents = str_replace("<!--[javascript]-->", "<script src=\"{{ url ('/js/foundation.js') }}\"></script>\n<!--[javascript]-->", $this->fileContents);
         }

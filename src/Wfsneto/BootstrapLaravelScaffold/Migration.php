@@ -1,4 +1,4 @@
-<?php namespace Jrenton\LaravelScaffold;
+<?php namespace Wfsneto\BootstrapLaravelScaffold;
 
 class Migration
 {
@@ -129,7 +129,7 @@ class Migration
 
         $migrationFile = $this->getMigrationFileName($migrationName, $timestamp);
 
-        $functionContents = "\t\tSchema::dropIfExists('".$this->model->getTableName()."');\n";
+        $functionContents = "        Schema::dropIfExists('".$this->model->getTableName()."');\n";
 
         $this->currentFileContents = $this->fileCreator->createFunction("up", $functionContents);
 
@@ -163,7 +163,7 @@ class Migration
             {
                 $this->columnsChanged = true;
                 array_push($this->columnsAdded, "deleted_at");
-                $content = "\t\t\t" . $this->setColumn('softDeletes', null) . ";\n";
+                $content = "            " . $this->setColumn('softDeletes', null) . ";\n";
             }
         }
 
@@ -180,10 +180,10 @@ class Migration
     {
         $type = $tableCreated ? "table" : "create";
 
-        $content = "\t\tSchema::$type('".$this->model->getTableName()."', function(Blueprint \$table) {\n";
+        $content = "        Schema::$type('".$this->model->getTableName()."', function(Blueprint \$table) {\n";
 
         if(!$tableCreated)
-            $content .= "\t\t\t" . $this->setColumn('increments', 'id') . ";\n";
+            $content .= "            " . $this->setColumn('increments', 'id') . ";\n";
 
         $content .= $this->addColumns();
 
@@ -197,7 +197,7 @@ class Migration
 
         $content .= $this->dropRelationships();
 
-        $content .= "\t\t});\n";
+        $content .= "        });\n";
 
         if($this->columnsChanged)
             $content .= $this->dropPivotTables();
@@ -215,26 +215,26 @@ class Migration
                 if(!$this->isTableCreated($tableName)) {
                     $this->columnsChanged = true;
                     array_push($this->tablesAdded, $tableName);
-                    $content .= "\t\tSchema::create('".$tableName."', function(Blueprint \$table) {\n";
-                    $content .= "\t\t\t\$table->integer('".$tableOne."_id')->unsigned();\n";
-                    $content .= "\t\t\t\$table->integer('".$tableTwo."_id')->unsigned();\n";
-                    $content .= "\t\t});\n";
+                    $content .= "        Schema::create('".$tableName."', function(Blueprint \$table) {\n";
+                    $content .= "            \$table->integer('".$tableOne."_id')->unsigned();\n";
+                    $content .= "            \$table->integer('".$tableTwo."_id')->unsigned();\n";
+                    $content .= "        });\n";
                 }
             } else if($relation->getType() == "hasOne" || $relation->getType() == "hasMany") {
                 if($this->tableHasColumn($this->model->lower()."_id", $relation->model->getTableName())) {
                     if(!$tableCreated) {
-                        $content .= "\t\tSchema::table('".$relation->model->getTableName()."', function(Blueprint \$table) {\n";
-                        $content .= "\t\t\t\$table->foreign('". $this->model->tableNameLower()."_id')->references('id')->on('".$this->model->getTableName()."');\n";
-                        $content .= "\t\t});\n";
+                        $content .= "        Schema::table('".$relation->model->getTableName()."', function(Blueprint \$table) {\n";
+                        $content .= "            \$table->foreign('". $this->model->tableNameLower()."_id')->references('id')->on('".$this->model->getTableName()."');\n";
+                        $content .= "        });\n";
                     }
                 } else if($this->isTableCreated($relation->model->getTableName()) && !$this->tableHasColumn($this->model->tableNameLower()."_id", $relation->model->getTableName())) {
                     $this->columnsChanged = true;
                     $column = $this->model->tableNameLower()."_id";
                     array_push($this->columnsAdded, $column);
-                    $content .= "\t\tSchema::table('".$relation->model->getTableName()."', function(Blueprint \$table) {\n";
-                    $content .= "\t\t\t\$table->integer('". $column."')->unsigned();\n";
-                    $content .= "\t\t\t\$table->foreign('". $column."')->references('id')->on('".$this->model->getTableName()."');\n";
-                    $content .= "\t\t});\n";
+                    $content .= "        Schema::table('".$relation->model->getTableName()."', function(Blueprint \$table) {\n";
+                    $content .= "            \$table->integer('". $column."')->unsigned();\n";
+                    $content .= "            \$table->foreign('". $column."')->references('id')->on('".$this->model->getTableName()."');\n";
+                    $content .= "        });\n";
                 }
             }
         }
@@ -476,13 +476,13 @@ class Migration
 
                     array_push($this->columnsAdded, $foreignKey);
 
-                    $fields .= "\t\t\t" .$this->setColumn('integer', $foreignKey);
+                    $fields .= "            " .$this->setColumn('integer', $foreignKey);
 
                     $fields .= $this->addColumnOption('unsigned') . ";\n";
 
                     if($this->isTableCreated($relation->model->getTableName()))
                     {
-                        $fields .= "\t\t\t\$table->foreign('". $foreignKey."')->references('id')->on('".$relation->model->getTableName()."');\n";
+                        $fields .= "            \$table->foreign('". $foreignKey."')->references('id')->on('".$relation->model->getTableName()."');\n";
 
                         array_push($this->foreignKeys, $foreignKey);
                     }
@@ -540,7 +540,7 @@ class Migration
 
             if(!$this->tableHasColumn($field)) {
                 $this->columnsChanged = true;
-                $rule = "\t\t\t";
+                $rule = "            ";
 
                 // Primary key check
                 if ( $field === 'id' and $type === 'integer' )
@@ -574,13 +574,13 @@ class Migration
             if (!$this->tableHasColumn("created_at"))
             {
                 $this->columnsChanged = true;
-                $content .= "\t\t\t" . $this->setColumn("timestamp", "created_at") . ";\n";
+                $content .= "            " . $this->setColumn("timestamp", "created_at") . ";\n";
             }
 
             if (!$this->tableHasColumn("updated_at"))
             {
                 $this->columnsChanged = true;
-                $content .= "\t\t\t" . $this->setColumn("timestamp", "updated_at") . ";\n";
+                $content .= "            " . $this->setColumn("timestamp", "updated_at") . ";\n";
             }
         }
         return $content;
@@ -597,7 +597,7 @@ class Migration
         foreach ($this->model->getPropertiesToRemove() as $property => $type)
         {
             $this->columnsChanged = true;
-            $content .= "\t\t\t\$table->dropColumn('".$property."');\n";
+            $content .= "            \$table->dropColumn('".$property."');\n";
         }
         return $content;
     }
@@ -616,7 +616,7 @@ class Migration
             if($relation->getType() == "belongsToMany")
             {
                 $this->columnsChanged = true;
-                $content .= "\t\tSchema::dropIfExists('".$relation->getPivotTableName($this->model)."');\n";
+                $content .= "        Schema::dropIfExists('".$relation->getPivotTableName($this->model)."');\n";
             }
         }
 
@@ -637,7 +637,7 @@ class Migration
             if($relation->getType() != "belongsToMany")
             {
                 $this->columnsChanged = true;
-                $content .= "\t\t\t\$table->dropColumn('".$relation->getForeignKeyName()."');\n";
+                $content .= "            \$table->dropColumn('".$relation->getForeignKeyName()."');\n";
             }
         }
         return $content;
@@ -652,14 +652,14 @@ class Migration
      */
     private function addPropertiesToTable($tableName, $properties)
     {
-        $functionContents = "\t\tSchema::table('" . $tableName . "', function(Blueprint \$table) {\n";
+        $functionContents = "        Schema::table('" . $tableName . "', function(Blueprint \$table) {\n";
 
         foreach ($properties as $property => $type)
         {
-            $functionContents .= "\t\t\t\$table->$type('$property');\n";
+            $functionContents .= "            \$table->$type('$property');\n";
         }
 
-        $functionContents .= "\t\t});\n";
+        $functionContents .= "        });\n";
         return $functionContents;
     }
 
@@ -671,9 +671,9 @@ class Migration
      */
     private function removePropertiesFromTable($tableName)
     {
-        $functionContents = "\t\tSchema::table('" . $tableName . "', function(Blueprint \$table) {\n";
+        $functionContents = "        Schema::table('" . $tableName . "', function(Blueprint \$table) {\n";
 
-        $functionContents .= "\t\t\t\$table->dropColumn(";
+        $functionContents .= "            \$table->dropColumn(";
 
         foreach ($this->columnsAdded as $column)
         {
@@ -682,7 +682,7 @@ class Migration
 
         $functionContents = rtrim($functionContents, ",");
         $functionContents .= ");\n";
-        $functionContents .= "\t\t});\n";
+        $functionContents .= "        });\n";
         return $functionContents;
     }
 
@@ -753,17 +753,17 @@ class Migration
         $functionContents = "";
         foreach ($removedRelationships as $relation) {
             if ($relation->getType() == "belongsToMany") {
-                $functionContents .= "\t\tSchema::create('" . $relation->getPivotTableName($this->model) . "', function(Blueprint \$table) {\n";
-                $functionContents .= "\t\t\t\$table->integer('" . $relation->getForeignKeyName() . "')->unsigned();\n";
-                $functionContents .= "\t\t\t\$table->integer('" . $this->model->lower() . "_id')->unsigned();\n";
-                $functionContents .= "\t\t\t\$table->foreign('" . $relation->getForeignKeyName() . "')->references('id')->on('" . $relation->getRelatedModelTableName() . "');\n";
-                $functionContents .= "\t\t\t\$table->foreign('" . $this->model->lower() . "_id')->references('id')->on('" . $this->model->getTableName() . "');\n";
-                $functionContents .= "\t\t});\n";
+                $functionContents .= "        Schema::create('" . $relation->getPivotTableName($this->model) . "', function(Blueprint \$table) {\n";
+                $functionContents .= "            \$table->integer('" . $relation->getForeignKeyName() . "')->unsigned();\n";
+                $functionContents .= "            \$table->integer('" . $this->model->lower() . "_id')->unsigned();\n";
+                $functionContents .= "            \$table->foreign('" . $relation->getForeignKeyName() . "')->references('id')->on('" . $relation->getRelatedModelTableName() . "');\n";
+                $functionContents .= "            \$table->foreign('" . $this->model->lower() . "_id')->references('id')->on('" . $this->model->getTableName() . "');\n";
+                $functionContents .= "        });\n";
             } else {
-                $functionContents .= "\t\tSchema::table('" . $tableName . "', function(Blueprint \$table) {\n";
-                $functionContents .= "\t\t\t\$table->integer('" . $relation->getForeignKeyName() . "')->unsigned();\n";
-                $functionContents .= "\t\t\t\$table->foreign('" . $relation->getForeignKeyName() . "')->references('id')->on('" . $relation->getRelatedModelTableName() . "');\n";
-                $functionContents .= "\t\t});\n";
+                $functionContents .= "        Schema::table('" . $tableName . "', function(Blueprint \$table) {\n";
+                $functionContents .= "            \$table->integer('" . $relation->getForeignKeyName() . "')->unsigned();\n";
+                $functionContents .= "            \$table->foreign('" . $relation->getForeignKeyName() . "')->references('id')->on('" . $relation->getRelatedModelTableName() . "');\n";
+                $functionContents .= "        });\n";
             }
         }
         return $functionContents;
@@ -784,7 +784,7 @@ class Migration
 
         if (!$tableCreated)
         {
-            $functionContents = "\t\tSchema::dropIfExists('" . $tableName . "');\n";
+            $functionContents = "        Schema::dropIfExists('" . $tableName . "');\n";
         }
         else
         {

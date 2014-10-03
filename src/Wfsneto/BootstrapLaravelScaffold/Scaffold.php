@@ -1,4 +1,4 @@
-<?php namespace Jrenton\LaravelScaffold;
+<?php namespace Wfsneto\BootstrapLaravelScaffold;
 
 use Illuminate\Console\Command;
 use Faker\Factory;
@@ -108,7 +108,7 @@ class Scaffold
      */
     private function getConfigSettings()
     {
-        $package = "laravel-scaffold";
+        $package = "bootstrap-laravel-scaffold";
 
         $configSettings = array();
 
@@ -472,13 +472,16 @@ class Scaffold
             return;
         }
 
-        $fileContents = "protected \$table = '". $this->model->getTableName() ."';\n";
+        if($this->model->hasSoftdeletes()) {
+            $fileContents = "use Illuminate\Database\Eloquent\SoftDeletingTrait;\n    ";
+        } else {
+            $fileContents = '';
+        }
+
+        $fileContents .= "protected \$table = '". $this->model->getTableName() ."';\n";
 
         if(!$this->model->hasTimestamps())
-            $fileContents .= "\tpublic \$timestamps = false;\n";
-
-        if($this->model->hasSoftdeletes())
-            $fileContents .= "\tprotected \$softDelete = true;\n";
+            $fileContents .= "    public \$timestamps = false;\n";
 
         $properties = "";
         foreach ($this->model->getProperties() as $property => $type) {
@@ -487,7 +490,7 @@ class Scaffold
 
         $properties = rtrim($properties, ",");
 
-        $fileContents .= "\tprotected \$fillable = array(".$properties.");\n";
+        $fileContents .= "    protected \$fillable = array(".$properties.");\n";
 
         $fileContents = $this->addRelationships($fileContents);
 
@@ -549,7 +552,7 @@ class Scaffold
             if(strpos($fileContents, $relation->getName()) !== false && !$newModel)
                 continue;
 
-            $functionContent = "\t\treturn \$this->" . $relation->getType() . "('" . $relatedModel->nameWithNamespace() . "');\n";
+            $functionContent = "        return \$this->" . $relation->getType() . "('" . $relatedModel->nameWithNamespace() . "');\n";
             $fileContents .= $this->fileCreator->createFunction($relation->getName(), $functionContent);
 
             $relatedModelFile = $this->configSettings['pathTo']['models'] . $relatedModel->upper() . '.php';
@@ -582,7 +585,7 @@ class Scaffold
                 $reverseRelationName = $relation->getReverseName($this->model, $reverseRelationType);
 
                 $content = substr($content, 0, strrpos($content, "}"));
-                $functionContent = "\t\treturn \$this->" . $reverseRelationType . "('" . $this->model->nameWithNamespace() . "');\n";
+                $functionContent = "        return \$this->" . $reverseRelationType . "('" . $this->model->nameWithNamespace() . "');\n";
                 $content .= $this->fileCreator->createFunction($reverseRelationName, $functionContent) . "}\n";
 
                 \File::put($relatedModelFile, $content);
@@ -657,7 +660,7 @@ class Scaffold
     private function copyTemplateFiles()
     {
         if(!\File::isDirectory($this->configSettings['pathTo']['templates']))
-            $this->fileCreator->copyDirectory("vendor/jrenton/laravel-scaffold/src/Jrenton/LaravelScaffold/templates/", $this->configSettings['pathTo']['templates']);
+            $this->fileCreator->copyDirectory("vendor/wfsneto/bootstrap-laravel-scaffold/src/Wfsneto/BootstrapLaravelScaffold/templates/", $this->configSettings['pathTo']['templates']);
     }
 
     /**
@@ -721,10 +724,10 @@ class Scaffold
             $contentAfter = substr($databaseSeederContents, strpos($databaseSeederContents, "{")+1);
 
             $databaseSeederContents = $contentBefore;
-            $databaseSeederContents .= "{\n\tprotected \$faker;\n\n";
-            $functionContents = "\t\tif(empty(\$this->faker)) {\n";
-            $functionContents .= "\t\t\t\$this->faker = Faker\\Factory::create();\n\t\t}\n\n";
-            $functionContents .= "\t\treturn \$this->faker;\n";
+            $databaseSeederContents .= "{\n    protected \$faker;\n\n";
+            $functionContents = "        if(empty(\$this->faker)) {\n";
+            $functionContents .= "            \$this->faker = Faker\\Factory::create();\n        }\n\n";
+            $functionContents .= "        return \$this->faker;\n";
 
             $databaseSeederContents .= $this->fileCreator->createFunction("getFaker", $functionContents);
 
@@ -733,16 +736,16 @@ class Scaffold
             \File::put($databaseSeeder, $databaseSeederContents);
         }
 
-        $functionContent = "\t\t\$faker = \$this->getFaker();\n\n";
-        $functionContent .= "\t\tfor(\$i = 1; \$i <= 10; \$i++) {\n";
+        $functionContent = "        \$faker = \$this->getFaker();\n\n";
+        $functionContent .= "        for(\$i = 1; \$i <= 10; \$i++) {\n";
 
-        $functionContent .= "\t\t\t\$".$this->model->lower()." = array(\n";
+        $functionContent .= "            \$".$this->model->lower()." = array(\n";
 
         foreach($this->model->getProperties() as $property => $type)
         {
 
             if($property == "password")
-                $functionContent .= "\t\t\t\t'$property' => \\Hash::make('password'),\n";
+                $functionContent .= "                '$property' => \\Hash::make('password'),\n";
             else
             {
                 $fakerProperty = "";
@@ -793,20 +796,20 @@ class Scaffold
                 else
                     $fakerType = "\$faker->".$fakerProperty;
 
-                $functionContent .= "\t\t\t\t'$property' => $fakerType,\n";
+                $functionContent .= "                '$property' => $fakerType,\n";
 
             }
         }
 
         foreach($this->migration->getForeignKeys() as $key)
-            $functionContent .= "\t\t\t\t'$key' => \$i,\n";
+            $functionContent .= "                '$key' => \$i,\n";
 
-        $functionContent .= "\t\t\t);\n";
+        $functionContent .= "            );\n";
 
         $namespace = $this->namespace ? "\\" . $this->namespace . "\\" : "";
 
-        $functionContent .= "\t\t\t". $namespace . $this->model->upper()."::create(\$".$this->model->lower().");\n";
-        $functionContent .= "\t\t}\n";
+        $functionContent .= "            ". $namespace . $this->model->upper()."::create(\$".$this->model->lower().");\n";
+        $functionContent .= "        }\n";
 
         $fileContents = $this->fileCreator->createFunction("run", $functionContent);
 
@@ -820,7 +823,7 @@ class Scaffold
 
         if(preg_match("/$tableSeederClassName/", $content) !== 1)
         {
-            $content = preg_replace("/(run\(\).+?)}/us", "$1\t\$this->call('{$tableSeederClassName}');\n\t}", $content);
+            $content = preg_replace("/(run\(\).+?)}/us", "$1    \$this->call('{$tableSeederClassName}');\n    }", $content);
             \File::put($databaseSeeder, $content);
         }
     }
@@ -885,14 +888,14 @@ class Scaffold
         $content = \File::get('app/start/global.php');
 
         if (preg_match("/repositories/", $content) !== 1)
-            $content = preg_replace("/app_path\(\).'\/controllers',/", "app_path().'/controllers',\n\t$startRepo,", $content);
+            $content = preg_replace("/app_path\(\).'\/controllers',/", "app_path().'/controllers',\n    $startRepo,", $content);
 
         \File::put('app/start/global.php', $content);
 
         $content = \File::get('composer.json');
 
         if (preg_match("/repositories/", $content) !== 1)
-            $content = preg_replace("/\"app\/controllers\",/", "\"app/controllers\",\n\t\t\t\"$repositories\",", $content);
+            $content = preg_replace("/\"app\/controllers\",/", "\"app/controllers\",\n            \"$repositories\",", $content);
 
         \File::put('composer.json', $content);
     }
@@ -990,7 +993,7 @@ class Scaffold
         catch(FileNotFoundException $e)
         {
             $shortTemplate = substr($template, strpos($template, $this->configSettings["pathTo"]["templates"]) + strlen($this->configSettings["pathTo"]["templates"]),strlen($template)-strlen($this->configSettings["pathTo"]["templates"]));
-            $this->fileCreator->copyFile("vendor/jrenton/laravel-scaffold/src/Jrenton/LaravelScaffold/templates/".$shortTemplate, $template);
+            $this->fileCreator->copyFile("vendor/wfsneto/bootstrap-laravel-scaffold/src/Wfsneto/BootstrapLaravelScaffold/templates/".$shortTemplate, $template);
             $fileContents = \File::get($template);
         }
 
