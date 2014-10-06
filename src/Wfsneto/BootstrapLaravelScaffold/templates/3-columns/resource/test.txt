@@ -10,7 +10,7 @@ class [test] extends \TestCase
 
     public function testShow()
     {
-        $this->call('GET', '[models]/details/1');
+        $this->call('GET', '[models]/1');
         $this->assertResponseOk();
     }
 
@@ -22,7 +22,7 @@ class [test] extends \TestCase
 
     public function testEdit()
     {
-        $this->call('GET', '[models]/edit/1');
+        $this->call('GET', '[models]/1/edit');
         $this->assertResponseOk();
     }
 }

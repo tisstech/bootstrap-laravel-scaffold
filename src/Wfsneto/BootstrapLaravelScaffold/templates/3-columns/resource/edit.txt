@@ -1,0 +1,19 @@
+@section('screen-title')
+    [Model] <small id="small-screen-title">Editar</small>
+@stop
+
+@section('content')
+<div class="row">
+    <div class="col-md-12">
+        <section class="panel">
+            <div class="panel-body">
+                <div class=" form">
+                    {{ Form::model($[model], array('route' => array('[models].update', $[model]->id) , 'method' => 'PUT', 'class' =>'cmxform form-horizontal')) }}
+                        @include('[models].fields', array('submit_label' => 'Editar'))
+                    {{Form::close()}}
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+@stop

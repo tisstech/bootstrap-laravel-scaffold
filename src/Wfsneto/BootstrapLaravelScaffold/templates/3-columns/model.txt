@@ -1,0 +1,7 @@
+<?php
+[namespace]
+
+class [Model] extends \Eloquent
+{
+    [content]
+}

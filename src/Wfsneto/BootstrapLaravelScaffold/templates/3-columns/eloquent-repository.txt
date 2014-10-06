@@ -1,0 +1,68 @@
+<?php
+[namespace]
+
+class [repository] implements [repositoryInterface]
+{
+    private $[model];
+    private $rules = array(
+    // Ajuste das Validações
+    [repeat]
+        '[property]' => '',
+    [/repeat]
+    );
+
+    public function __construct([modelName] $[model])
+    {
+        $this->[model] = $[model];
+    }
+
+    public function all()
+    {
+        return $this->[model]->all();
+    }
+
+    public function find($id)
+    {
+        return $this->[model]->find($id);
+    }
+
+    public function store($input)
+    {
+        $validator = Validator::make($input, $this->rules);
+
+        if ($validator->passes()):
+            if ([Model]::create($input)):
+                return Redirect::route('[models].index')->with('success', '[Model] Cadastrado Com Sucesso.');
+            else:
+                return Redirect::back()->withInput()->with('error', '[Model] Não Pode Ser Cadastrado.');
+            endif;
+        else:
+            return Redirect::back()->withErrors($validator->messages())->withInput();
+        endif;
+    }
+
+    public function update($id,$input)
+    {
+        $validator = Validator::make($input, $this->rules);
+
+        if ($validator->passes()):
+            if ($this->[model]->find($id)->update($input)):
+                return Redirect::route('[models].index')->with('success', '[Model] Editada Com Sucesso.');
+            else:
+                return Redirect::back()->withInput()->with('error', '[Model] Não Pode Ser Editada.');
+            endif;
+        else:
+            return Redirect::back()->withErrors($validator->messages())->withInput();
+        endif;
+    }
+
+    public function destroy($id)
+    {
+        if ($this->[model]->find($id)->delete()):
+            return Redirect::route('[models].index')->with('success', '[Model] Apagado Com Sucesso.');
+        else:
+            return Redirect::back()->withInput()->with('error', '[Model] Não Pode Ser Apagado.');
+        endif;
+    }
+
+}

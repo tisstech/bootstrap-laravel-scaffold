@@ -1,19 +1,19 @@
+@section('screen-title')
+    {{ trans('eloquent.models.[model]') }}  <small id="small-screen-title">Adicionar</small>
+@stop
+
 @section('content')
-<div class="row">
-    <h2>New [Model]</h2>
-</div>
-<div class="row">
-    {{ Form::open(array('url' => '[model]')) }}
-
-    [repeat]
-    <div class="form-group">
-        {{ Form::label('[property]', '[Property]') }}
-        {{ Form::text('[property]', Input::old('[property]'), array('class' => 'form-control')) }}
+    <div class="row">
+        <div class="col-md-12">
+            <section class="panel">
+                @include('[models].form', [
+                    'form_attributes' => [
+                        'method' => 'POST',
+                        'class' =>'cmxform form-horizontal',
+                        'route' => '[models].store',
+                    ]
+                ])
+            </section>
+        </div>
     </div>
-    [/repeat]
-
-    {{ Form::submit('Add [Model]', array('class' => 'btn btn-success')) }}
-
-    {{ Form::close() }}
-</div>
 @stop

@@ -1,0 +1,31 @@
+@section('screen-title')
+    [Model] <small id="small-screen-title">Detalhes</small>
+@stop
+
+@section('content')
+<div class="row">
+    <div class="col-md-12">
+        <section class="panel">
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            [repeat]
+                            <th>[Property]</th>
+                            [/repeat]
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            [repeat]
+                            <td>{{ $[model]->[property] }}</td>
+                            [/repeat]
+                        </tr>
+                    </tbody>
+                </table>
+                <a class="btn btn-default" href="{{ url('[models]') }}">Voltar</a>
+            </div>
+        </section>
+    </div>
+</div>
+@stop

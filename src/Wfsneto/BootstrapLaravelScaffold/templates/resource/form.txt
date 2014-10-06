@@ -1,0 +1,33 @@
+{{ Form::model($[model], $form_attributes) }}
+
+<!-- <div class="panel-heading">
+    <div class="panel-title">Group Title</div>
+</div> -->
+
+<div class="panel-body">
+    <div class=" form">
+[repeat]
+        <div class="form-group">
+            {{ Form::label('[property]', '[Property]', [ 'class' => 'control-label col-md-3' ]) }}
+            <div class="col-md-6">
+                {{ Form::text('[property]', $[model]->[property], [ 'class' => 'form-control' ]) }}
+            </div>
+        </div>
+[/repeat]
+    </div>
+</div>
+
+<div class="panel-body">
+    <div class=" form">
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-6">
+                {{ link_to_route('[models].index', 'Voltar',[], [ 'class' => 'btn btn-default' ]) }}
+                <div class="pull-right">
+                    {{ Form::submit('Salvar', [ 'class' => 'btn btn-primary' ]) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ Form::close() }}

@@ -1,4 +1,5 @@
-<?php namespace Wfsneto\BootstrapLaravelScaffold;
+<?php
+namespace Wfsneto\BootstrapLaravelScaffold;
 
 use Illuminate\Console\Command;
 use Faker\Factory;
@@ -110,16 +111,15 @@ class Scaffold
     {
         $package = "bootstrap-laravel-scaffold";
 
-        $configSettings = array();
+        $configSettings = [];
 
         $configSettings['pathTo'] = \Config::get("$package::paths");
 
         foreach($configSettings['pathTo'] as $pathName => $path)
         {
-            if($path[strlen($path)-1] != "/")
+            if($path[strlen($path)-1] != '/')
             {
-                if($pathName != "layout")
-                    $path .= "/";
+                if($pathName != 'layout') $path .= '/';
 
                 $configSettings['pathTo'][$pathName] = $path;
             }
@@ -385,10 +385,12 @@ class Scaffold
 
         if(!$propertiesGenerated)
         {
-            if($this->fromFile)
+            if($this->fromFile) {
                 exit;
-            else
+            }
+            else {
                 $this->createModels();
+            }
         }
     }
 
@@ -410,10 +412,10 @@ class Scaffold
     private function getModelCacheFile()
     {
         $file = $this->configSettings['modelDefinitionsFile'];
-        $modelFilename = substr(strrchr($file, "/"), 1);
-        $ext = substr($modelFilename, strrpos($modelFilename, "."), strlen($modelFilename)-strrpos($modelFilename, "."));
-        $name = substr($modelFilename, 0, strrpos($modelFilename, "."));
-        $modelDefinitionsFile = substr($file, 0, strrpos($file, "/")+1) . "." . $name ."-cache". $ext;
+        $modelFilename = substr(strrchr($file, '/'), 1);
+        $ext = substr($modelFilename, strrpos($modelFilename, '.'), strlen($modelFilename) - strrpos($modelFilename, '.'));
+        $name = substr($modelFilename, 0, strrpos($modelFilename, '.'));
+        $modelDefinitionsFile = substr($file, 0, strrpos($file, '/')+1) . '.' . $name .'-cache'. $ext;
         return $modelDefinitionsFile;
     }
 
@@ -434,7 +436,7 @@ class Scaffold
         {
             $this->controllerType = $this->getControllerType();
 
-            $this->templatePathWithControllerType = $this->configSettings['pathTo']['templates'] . $this->controllerType ."/";
+            $this->templatePathWithControllerType = $this->configSettings['pathTo']['templates'] . $this->controllerType . '/';
 
             if(!$this->model->exists)
             {
@@ -454,6 +456,8 @@ class Scaffold
                 $this->createTests();
 
                 $this->createSeeds();
+
+                $this->createValidators();
             }
         }
     }
@@ -463,7 +467,7 @@ class Scaffold
      */
     private function createModel()
     {
-        $fileName = $this->configSettings['pathTo']['models'] . $this->nameOf("modelName") . ".php";
+        $fileName = $this->configSettings['pathTo']['models'] . $this->nameOf('modelName') . '.php';
 
         if(\File::exists($fileName))
         {
@@ -474,7 +478,8 @@ class Scaffold
 
         if($this->model->hasSoftdeletes()) {
             $fileContents = "use Illuminate\Database\Eloquent\SoftDeletingTrait;\n    ";
-        } else {
+        }
+        else {
             $fileContents = '';
         }
 
@@ -496,7 +501,7 @@ class Scaffold
 
         $template = $this->configSettings['useRepository'] ? "model.txt" : "model-no-repo.txt";
 
-        $this->makeFileFromTemplate($fileName, $this->configSettings['pathTo']['templates'].$template, $fileContents);
+        $this->makeFileFromTemplate($fileName, $this->configSettings['pathTo']['templates'] . $template, $fileContents);
 
         $this->addModelLinksToLayoutFile();
     }
@@ -527,7 +532,7 @@ class Scaffold
         {
             $layout = \File::get($layoutFile);
 
-            $layout = str_replace("<!--[linkToModels]-->", "<a href=\"{{ url('".$this->nameOf("viewFolder")."') }}\" class=\"list-group-item\">".$this->model->upper()."</a>\n<!--[linkToModels]-->", $layout);
+            $layout = str_replace("<!--[linkToModels]-->", "<a href=\"{{ url('" . $this->nameOf("viewFolder") . "') }}\" class=\"list-group-item\">".$this->model->upper()."</a>\n<!--[linkToModels]-->", $layout);
 
             \File::put($layoutFile, $layout);
         }
@@ -559,16 +564,18 @@ class Scaffold
 
             if (!\File::exists($relatedModelFile))
             {
-                if ($this->fromFile)
+                if ($this->fromFile) {
                     continue;
-                else
-                {
+                }
+                else {
                     $editRelatedModel = $this->command->confirm("Model " . $relatedModel->upper() . " doesn't exist yet. Would you like to create it now [y/n]? ", true);
 
-                    if ($editRelatedModel)
+                    if ($editRelatedModel){
                         $this->fileCreator->createClass($relatedModelFile, "", array('name' => "\\Eloquent"));
-                    else
+                    }
+                    else {
                         continue;
+                    }
                 }
             }
 
@@ -683,13 +690,11 @@ class Scaffold
         {
             $editMigrations = $this->command->confirm('Would you like to edit your migrations file before running it [y/n]? ', true);
 
-            if ($editMigrations)
-            {
+            if ($editMigrations) {
                 $this->command->info('Remember to run "php artisan migrate" after editing your migration file');
                 $this->command->info('And "php artisan db:seed" after editing your seed file');
             }
-            else
-            {
+            else {
                 while (true)
                 {
                     try
@@ -725,7 +730,7 @@ class Scaffold
 
             $databaseSeederContents = $contentBefore;
             $databaseSeederContents .= "{\n    protected \$faker;\n\n";
-            $functionContents = "        if(empty(\$this->faker)) {\n";
+            $functionContents =  "        if(empty(\$this->faker)) {\n";
             $functionContents .= "            \$this->faker = Faker\\Factory::create();\n        }\n\n";
             $functionContents .= "        return \$this->faker;\n";
 
@@ -736,18 +741,17 @@ class Scaffold
             \File::put($databaseSeeder, $databaseSeederContents);
         }
 
-        $functionContent = "        \$faker = \$this->getFaker();\n\n";
+        $functionContent =  "        \$faker = \$this->getFaker();\n\n";
         $functionContent .= "        for(\$i = 1; \$i <= 10; \$i++) {\n";
-
-        $functionContent .= "            \$".$this->model->lower()." = array(\n";
+        $functionContent .= "            \$" . $this->model->lower() . " = array(\n";
 
         foreach($this->model->getProperties() as $property => $type)
         {
 
-            if($property == "password")
+            if($property == "password") {
                 $functionContent .= "                '$property' => \\Hash::make('password'),\n";
-            else
-            {
+            }
+            else {
                 $fakerProperty = "";
                 try
                 {
@@ -793,8 +797,9 @@ class Scaffold
 
                     $fakerType = $fakerType ? "\$faker->".$fakerType : "0";
                 }
-                else
+                else {
                     $fakerType = "\$faker->".$fakerProperty;
+                }
 
                 $functionContent .= "                '$property' => $fakerType,\n";
 
@@ -1077,5 +1082,29 @@ class Scaffold
         }
 
         return $fileContents;
+    }
+
+    /**
+     *  Create validators as specified in the configuration file
+     */
+    private function createValidators()
+    {
+        $dir = $this->configSettings['pathTo']['validators'];
+
+        if (!\File::isDirectory($dir))
+            \File::makeDirectory($dir);
+
+        $pathToValidators = $this->configSettings['pathTo']['templates'];
+
+        $validator = $this->nameOf('validator');
+
+        $fileName = $dir . $validator . '.php';
+
+        try {
+            $this->makeFileFromTemplate($fileName, $pathToValidators . 'validator.txt');
+        }
+        catch(FileNotFoundException $e) {
+            $this->command->error('Template file ' . $pathToValidators . $validator . '.txt does not exist! You need to create it to generate that file!');
+        }
     }
 }

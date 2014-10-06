@@ -1,9 +1,10 @@
-<?php namespace Wfsneto\BootstrapLaravelScaffold;
+<?php
+namespace Wfsneto\BootstrapLaravelScaffold;
 
 use Illuminate\Support\ServiceProvider;
 
-class BootstrapLaravelScaffoldServiceProvider extends ServiceProvider {
-
+class BootstrapLaravelScaffoldServiceProvider extends ServiceProvider
+{
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -58,7 +59,7 @@ class BootstrapLaravelScaffoldServiceProvider extends ServiceProvider {
      */
     public function provides()
     {
-        return array();
+        return [];
     }
 
 }

@@ -1,6 +1,10 @@
-<?php [namespace]
+<?php
+[namespace]
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class [Model] extends \Eloquent
 {
+    use SoftDeletingTrait;
+
     [content]
 }

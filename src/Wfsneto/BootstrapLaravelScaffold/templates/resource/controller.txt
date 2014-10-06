@@ -1,53 +1,80 @@
-<?php [namespace]
-
+<?php
+[namespace]
 class [controller] extends \BaseController
 {
-	protected $[model];
+    protected $[model];
 
-	public function __construct([repositoryInterface] $[model])
-	{
-		$this->[model] = $[model];
-	}
+    public $actions =  [
+        'create' => 'Criar',
+        'index' => 'Listar',
+        'edit' => 'Editar',
+        'destroy' => 'Remover',
+    ];
 
-	public function index()
-	{
-    	$[models] = $this->[model]->all();
-        $this->layout->content = \View::make('[model].index', compact('[models]'));
-	}
+    public function __construct(\Eloquent[Model]Repository $[model])
+    {
+        $this->[model] = $[model];
+    }
 
-	public function create()
-	{
-        $this->layout->content = \View::make('[model].create');
-	}
+    public function index()
+    {
+        $this->layout->content = \View::make('[models].index')->with('[models]', $this->[model]->all());
+    }
 
-	public function store()
-	{
-        $this->[model]->store(\Input::only([repeat]'[property]',[/repeat]));
-        return \Redirect::route('[model].index');
-	}
+    public function create()
+    {
+        $this->layout->content = \View::make('[models].create')->with('[model]', $this->[model]->init());
+    }
 
-	public function show($id)
-	{
+    public function store()
+    {
+        $created = $this->[model]->store(\Input::except('_method', '_token'));
+
+        if ($created->validator->success()) {
+            return \Redirect::route('[models].edit', $created->model->id)->with('success', $created->validator->message);
+        }
+        else {
+            return \Redirect::back()->withErrors($created->validator->errors)->withInput();
+        } # endif;
+    }
+
+    public function edit($id)
+    {
         $[model] = $this->[model]->find($id);
-        $this->layout->content = \View::make('[model].show')->with('[model]', $[model]);
-	}
+        if (empty($[model])) \Redirect::back();
 
-	public function edit($id)
-	{
+        $this->layout->content = \View::make('[models].edit')->with('[model]', $[model]);
+    }
+
+    public function update($id)
+    {
+        $updated = $this->[model]->update($id, \Input::except('_method', '_token'));
+
+        if ($updated->validator->success()) {
+            return \Redirect::route('[models].index')->with('success', $updated->validator->message);
+        }
+        else {
+            return \Redirect::back()->withErrors($updated->validator->errors)->withInput();
+        } # endif;
+    }
+
+    public function show($id)
+    {
         $[model] = $this->[model]->find($id);
-        $this->layout->content = \View::make('[model].edit')->with('[model]', $[model]);
-	}
+        if (empty($[model])) \Redirect::back();
 
-	public function update($id)
-	{
-        $this->[model]->find($id)->update(\Input::only([repeat]'[property]',[/repeat]));
-        return \Redirect::route('[model].show', $id);
-	}
+        $this->layout->content = \View::make('[models].show')->with('[model]', $[model]);
+    }
 
-	public function destroy($id)
-	{
-        $this->[model]->destroy($id);
-        return \Redirect::route('[model].index');
-	}
+    public function destroy($id)
+    {
+        $response = $this->[model]->destroy($id);
 
+        if ($response->validator->success()) {
+            return Redirect::route('[models].index')->with('success', $response->validator->message);
+        }
+        else {
+            return Redirect::back()->withErrors($response->validator->errors)->withInput();
+        }
+    }
 }

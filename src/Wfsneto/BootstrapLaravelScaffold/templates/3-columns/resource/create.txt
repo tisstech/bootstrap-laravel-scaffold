@@ -1,0 +1,21 @@
+@section('screen-title')
+    User::name <small id="small-screen-title">Adicionar</small>
+@stop
+
+@section('content')
+
+<div class="row">
+    <div class="col-md-12">
+        <section class="panel">
+            <div class="panel-body">
+                <div class=" form">
+                    {{ Form::open(array('url' => '[models]', 'class' => 'cmxform form-horizontal')) }}
+                        @include('[models].fields', array('submit_label' => 'Salvar'))
+                    {{Form::close()}}
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+@stop

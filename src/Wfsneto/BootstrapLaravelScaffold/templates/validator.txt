@@ -1,0 +1,16 @@
+<?php
+
+class [Model]Validator extends \BaseValidator
+{
+    public function main($attributes, $id = false)
+    {
+
+        $rules = [
+[repeat]
+            '[property]' => 'required', # |unique:[models],[property],' . ($id ?: 'NULL') . ',id,deleted_at,NULL
+[/repeat]
+        ];
+
+        return $this->validate($attributes, $rules);
+    }
+}

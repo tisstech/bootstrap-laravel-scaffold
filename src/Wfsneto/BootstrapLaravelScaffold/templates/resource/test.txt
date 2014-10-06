@@ -1,28 +1,141 @@
-<?php 
+<?php
 
-class [test] extends \TestCase
+/**
+ * @group [models]
+ */
+class [Models]ControllerTest extends \TestCase
 {
-	public function testIndex()
-	{
-		$this->call('GET', '[model]');
-        $this->assertResponseOk();
-    }
-
-    public function testShow()
+    /**
+     * setUp run before each test
+     */
+    public function setUp()
     {
-        $this->call('GET', '[model]/1');
-        $this->assertResponseOk();
+        parent::setUp();
+        $this->[model] = new Eloquent[Model]Repository(new [Model], new [Model]Validator);
     }
 
+    /**
+     * tearDown run after each test
+     */
+    public function tearDown()
+    {
+        parent::tearDown();
+    }
+
+    /**
+     * @group [models]@index
+     */
+    public function testIndex()
+    {
+        # request
+        $this->client->request('GET', action('[Models]Controller@index'));
+
+        # assertions
+        $this->assertResponseOk();
+        $this->assertVarOnView('[models]', '[models].index');
+    }
+
+    /**
+     * @group [models]@create
+     */
     public function testCreate()
     {
-        $this->call('GET', '[model]/create');
+        # request
+        $this->client->request('GET', action('[Models]Controller@create'));
+
+        # assertions
         $this->assertResponseOk();
+        $this->assertVarOnView('[model]', '[models].create');
     }
 
+    /**
+     * @group [models]@store
+     */
+    public function testStore()
+    {
+        # remove
+        $this->[model]->eloquent->where('id', '>', 2)->forceDelete();
+
+        # params
+        $data = [ 'title' =>  'Profile of store' ];
+        $http_referer = [ 'HTTP_REFERER' => action('[Models]Controller@create') ];
+
+        # request
+        $this->client->request('POST', action('[Models]Controller@store'), $data, [], $http_referer);
+
+        # finder created
+        $[model] = $this->[model]->eloquent->orderBy('id', 'desc')->first();
+
+        # assertions
+        $this->assertResponseStatus(302);
+        $this->assertRedirectedToAction('[Models]Controller@edit', $[model]->id);
+        $this->assertEquals($[model]->title, $data['title']);
+    }
+
+    /**
+     * @group [models]@edit
+     */
     public function testEdit()
     {
-        $this->call('GET', '[model]/1/edit');
+        # remove
+        $this->[model]->eloquent->where('id', '>', 2)->forceDelete();
+
+        # persist
+        $[model] = $this->[model]->eloquent->create([ 'title' =>  'Profile of edit' ]);
+
+        # request
+        $this->client->request('GET', action('[Models]Controller@edit', $[model]->id));
+
+        # assertions
         $this->assertResponseOk();
+        $this->assertVarOnView('[model]', '[models].edit');
+    }
+
+    /**
+     * @group [models]@update
+     */
+    public function testUpdate()
+    {
+        # remove
+        $this->[model]->eloquent->where('id', '>', 2)->forceDelete();
+
+        # persist
+        $[model] = $this->[model]->eloquent->create([ 'title' =>  'Profile of update' ]);
+
+        # params
+        $data = [ 'title' =>  'Alter profile of update' ];
+        $http_referer = [ 'HTTP_REFERER' => action('[Models]Controller@edit', $[model]->id) ];
+
+        # request
+        $this->call('PUT', action('[Models]Controller@update', $[model]->id), $data, [], $http_referer);
+
+        # assertions
+        $this->assertResponseStatus(302);
+        $this->assertRedirectedToAction('[Models]Controller@index');
+        $this->assertEquals($this->[model]->find($[model]->id)->title, $data['title']);
+
+    }
+
+    /**
+     * @group [models]@destroy
+     */
+    public function testDestroy()
+    {
+        # remove
+        $this->[model]->eloquent->where('id', '>', 2)->forceDelete();
+
+        # persist
+        $[model] = $this->[model]->eloquent->create([ 'title' => 'Profile of destroy' ]);
+
+        # params
+        $http_referer = [ 'HTTP_REFERER' => action('[Models]Controller@index') ];
+
+        # request
+        $this->client->request('DELETE', action('[Models]Controller@destroy', $[model]->id), [], [], $http_referer);
+
+        # assertions
+        $this->assertResponseStatus(302);
+        $this->assertRedirectedToAction('[Models]Controller@index');
+        $this->assertEmpty($this->[model]->eloquent->find($[model]->id));
     }
 }

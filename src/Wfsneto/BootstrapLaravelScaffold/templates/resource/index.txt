@@ -1,27 +1,57 @@
+@section('stylesheets')
+    {{ HTML::style('css/table-responsive.css') }}
+@stop
+
+@section('screen-title')
+    {{ trans('eloquent.models.[model]') }}
+@stop
+
 @section('content')
-<div class="row">
-    <h1>All [Models]</h1>
-    <a class="btn btn-success" href="{{ url('[model]/create') }}">New</a>
-</div>
-<div class="row">
-    {{ $[models]->links() }}
-</div>
-<div class="row">
-    <table class="table">
-        <thead>
-        [repeat]<th>[Property]</th>[/repeat]
-        </thead>
-        <tbody>
-        @foreach($[models] as $[model])
-        <tr>
-            [repeat]
-            <td>
-                <a href="{{ url('[model]/'.$[model]->id) }}">{{ $[model]->[property] }}</a>
-            </td>
-            [/repeat]
-        </tr>
-        @endforeach
-        </tbody>
-    </table>
-</div>
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="panel">
+                <div class="panel-body">
+                    <div class="adv-table editable-table ">
+                        <div class="clearfix">
+                            @if(AuthHelper::isAuthorized('[controller]@create'))
+                                <div class="btn-group">
+                                    <a class="btn btn-primary" href="{{ url('[models]/create') }}">
+                                        Adicionar <i class="fa fa-plus"></i>
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="space15"></div>
+                        <section id="flip-scroll">
+                            <table class="table table-bordered table-striped table-condensed cf" id="editable-sample">
+                                <thead>
+                                    <tr>
+                                        [repeat]
+                                        <th>[Property]</th>
+                                        [/repeat]
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($[models] as $[model])
+                                        <tr class="">
+                                            [repeat]
+                                            <td>{{ $[model]->[property] }}</td>
+                                            [/repeat]
+                                            <td>
+                                                {{ Form::open(array('url' => array('[models]', $[model]->id), 'method' => 'delete', 'class' => 'form-inline')) }}
+                                                    {{ Form::actions('[models]', $[model]->id) }}
+                                                {{ Form::close() }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            @include('layouts.pagination', ['object' => $[models]])
+                        </section>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
 @stop

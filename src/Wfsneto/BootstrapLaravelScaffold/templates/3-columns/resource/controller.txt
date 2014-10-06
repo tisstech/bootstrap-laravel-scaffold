@@ -1,0 +1,52 @@
+<?php
+[namespace]
+
+class [controller] extends \BaseController
+{
+    protected $[model];
+    public $actions = array('create'=>'Criar', 'index'=>'Listar', 'edit'=>'Editar', 'destroy'=>'Remover');
+
+    public function __construct([repository] $[model])
+    {
+        $this->[model] = $[model];
+    }
+
+    public function index()
+    {
+        $[models] = $this->[model]->all();
+        $this->layout->content = \View::make('[models].index', compact('[models]'));
+    }
+
+    public function create()
+    {
+        $this->layout->content = \View::make('[models].create');
+    }
+
+    public function store()
+    {
+        return $this->[model]->store(Input::except('_method', '_token'));
+    }
+
+    public function show($id)
+    {
+        $[model] = $this->[model]->find($id);
+        $this->layout->content = \View::make('[models].show')->with('[model]', $[model]);
+    }
+
+    public function edit($id)
+    {
+        $[model] = $this->[model]->find($id);
+        $this->layout->content = \View::make('[models].edit')->with('[model]', $[model]);
+    }
+
+    public function update($id)
+    {
+        return $this->[model]->update($id, Input::except('_method', '_token'));
+    }
+
+    public function destroy($id)
+    {
+        $this->[model]->destroy($id);
+        return \Redirect::route('[models].index');
+    }
+}
