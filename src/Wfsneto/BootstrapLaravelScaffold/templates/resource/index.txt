@@ -26,17 +26,15 @@
                             <table class="table table-bordered table-striped table-condensed cf" id="editable-sample">
                                 <thead>
                                     <tr>
-                                        [repeat]
-                                        <th>[Property]</th>
+                                        [repeat]<th>[Property]</th>
                                         [/repeat]
                                         <th>Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($[models] as $[model])
-                                        <tr class="">
-                                            [repeat]
-                                            <td>{{ $[model]->[property] }}</td>
+                                        <tr>
+                                            [repeat]<td>{{ $[model]->[property] }}</td>
                                             [/repeat]
                                             <td>
                                                 {{ Form::open(array('url' => array('[models]', $[model]->id), 'method' => 'delete', 'class' => 'form-inline')) }}

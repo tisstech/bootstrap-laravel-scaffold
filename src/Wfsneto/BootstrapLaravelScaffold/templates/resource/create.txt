@@ -1,5 +1,6 @@
 @section('screen-title')
-    {{ trans('eloquent.models.[model]') }}  <small id="small-screen-title">Adicionar</small>
+    {{ trans('eloquent.models.[model]') }}
+    <small id="small-screen-title">Adicionar</small>
 @stop
 
 @section('content')

@@ -1,39 +1,31 @@
 @section('screen-title')
-    {{ trans('eloquent.models.[model]') }}  <small id="small-screen-title">Detalhes</small>
+    {{ trans('eloquent.models.[model]') }}
+    <small id="small-screen-title">Detalhes</small>
 @stop
 
 @section('content')
-    <div class="row">
-        <div class="col-md-12">
-            <section class="panel">
-                {{ Form::open(array('url' => '[models]','class' =>'cmxform form-horizontal')) }}
-                    <!-- <div class="panel-heading">
-                        <div class="panel-title">Group Title</div>
-                    </div> -->
-                    <div class="panel-body">
-                        <div class="form">
-                        [repeat]
-                            <div class="form-group">
-                                {{ Form::label('[property]', '[Property]', array('class' => 'control-label col-md-3')) }}
-                                <div class="col-md-6">
-                                    {{ Form::label('[property]', $[model]->[property], array('class' => 'form-control-static')) }}
-                                </div>
-                            </div>
-                        [/repeat]
-                        </div>
-                    </div>
-
-                    <div class="panel-body">
-                        <div class="form">
-                            <div class="form-group">
-                                <div class="col-lg-offset-3 col-lg-6">
-                                    <a class="btn btn-default" href="{{ url('[models]') }}">Voltar</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {{Form::close()}}
-            </section>
-        </div>
+<div class="row">
+    <div class="col-md-12">
+        <section class="panel">
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            [repeat]<th>[Property]</th>
+                            [/repeat]
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            [repeat]<td>{{ $[model]->[property] }}</td>
+                            [/repeat]
+                        </tr>
+                    </tbody>
+                </table>
+                <a class="btn btn-default" href="{{ action('[Models]Controller@index') }}">Voltar</a>
+            </div>
+        </section>
     </div>
+</div>
 @stop
+

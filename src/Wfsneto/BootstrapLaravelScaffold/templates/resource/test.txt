@@ -27,12 +27,14 @@ class [Models]ControllerTest extends \TestCase
      */
     public function testIndex()
     {
+        # assertions
+        $this->assertVarOnView('[models]', '[models].index');
+
         # request
         $this->client->request('GET', action('[Models]Controller@index'));
 
         # assertions
         $this->assertResponseOk();
-        $this->assertVarOnView('[models]', '[models].index');
     }
 
     /**
@@ -40,12 +42,14 @@ class [Models]ControllerTest extends \TestCase
      */
     public function testCreate()
     {
+        # assertions
+        $this->assertVarOnView('[model]', '[models].create');
+
         # request
         $this->client->request('GET', action('[Models]Controller@create'));
 
         # assertions
         $this->assertResponseOk();
-        $this->assertVarOnView('[model]', '[models].create');
     }
 
     /**
@@ -77,6 +81,9 @@ class [Models]ControllerTest extends \TestCase
      */
     public function testEdit()
     {
+        # assertions
+        $this->assertVarOnView('[model]', '[models].edit');
+
         # remove
         $this->[model]->eloquent->where('id', '>', 2)->forceDelete();
 
@@ -88,7 +95,6 @@ class [Models]ControllerTest extends \TestCase
 
         # assertions
         $this->assertResponseOk();
-        $this->assertVarOnView('[model]', '[models].edit');
     }
 
     /**
