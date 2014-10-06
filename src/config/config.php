@@ -86,7 +86,8 @@ return array(
         'tests' => 'app/tests',
         'views' => 'app/views',
         'routes' => 'app',
-        'layout' => 'app/views/layouts/default.blade.php'
+        'layout' => 'app/views/layouts/default.blade.php',
+        'validators' => 'app/validators',
 
     ),
 
@@ -114,6 +115,7 @@ return array(
         'baseRepositoryInterface' => 'RepositoryInterface',
         'repositoryInterface' => '[Model]RepositoryInterface',
         'viewFolder' => '[model]',
+        'validator' => '[Model]Validator',
 
     ),
 
