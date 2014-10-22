@@ -114,7 +114,7 @@ return array(
         'repository' => 'Eloquent[Model]Repository',
         'baseRepositoryInterface' => 'RepositoryInterface',
         'repositoryInterface' => '[Model]RepositoryInterface',
-        'viewFolder' => '[model]',
+        'viewFolder' => '[models]',
         'validator' => '[Model]Validator',
 
     ),
@@ -136,6 +136,7 @@ return array(
 
         'show',
         'edit',
+        'form',
         'create',
         'index'
 
