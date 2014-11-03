@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ return array(
     |
     */
 
-    'appName' => 'Your project',
+    'appName' => 'Your project name',
 
     /*
     |--------------------------------------------------------------------------
@@ -51,7 +51,7 @@ return array(
     |
     */
 
-    'downloads' => array(
+    'downloads' => [
 
         'jquery1' => true,
         'jquery2' => false,
@@ -63,7 +63,7 @@ return array(
         'ember' => false,
         'backbone' => false
 
-    ),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -74,7 +74,7 @@ return array(
     |
     */
 
-    'paths' => array(
+    'paths' => [
 
         'templates' => 'app/templates',
         'controllers' => 'app/controllers',
@@ -89,7 +89,7 @@ return array(
         'layout' => 'app/views/layouts/default.blade.php',
         'validators' => 'app/validators',
 
-    ),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -106,9 +106,9 @@ return array(
     |
     */
 
-    'names' => array(
+    'names' => [
 
-        'controller' => '[Model]Controller',
+        'controller' => '[Models]Controller',
         'modelName' => '[Model]',
         'test' => '[Models]ControllerTest',
         'repository' => 'Eloquent[Model]Repository',
@@ -117,7 +117,7 @@ return array(
         'viewFolder' => '[models]',
         'validator' => '[Model]Validator',
 
-    ),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -132,7 +132,7 @@ return array(
     |
     */
 
-    'views' => array(
+    'views' => [
 
         'show',
         'edit',
@@ -140,5 +140,5 @@ return array(
         'create',
         'index'
 
-    )
-);
+    ]
+];
