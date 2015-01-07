@@ -2,79 +2,10 @@
 [namespace]
 class [controller] extends \BaseController
 {
-    protected $[model];
+    protected $repository;
 
-    public $actions =  [
-        'create' => 'Criar',
-        'index' => 'Listar',
-        'edit' => 'Editar',
-        'destroy' => 'Remover',
-    ];
-
-    public function __construct(\Eloquent[Model]Repository $[model])
+    public function __construct(\Eloquent[Model]Repository $repository)
     {
-        $this->repository = $[model];
-    }
-
-    public function index()
-    {
-        $this->layout->content = \View::make('[models].index')->with('[models]', $this->repository->all());
-    }
-
-    public function create()
-    {
-        $this->layout->content = \View::make('[models].create')->with('[model]', $this->repository->init());
-    }
-
-    public function store()
-    {
-        $created = $this->repository->store(\Input::except('_method', '_token'));
-
-        if ($created->validator->success()) {
-            return \Redirect::route('[models].edit', $created->model->id)->with('success', $created->validator->message);
-        }
-        else {
-            return \Redirect::back()->withErrors($created->validator->errors)->withInput();
-        } # endif;
-    }
-
-    public function edit($id)
-    {
-        $[model] = $this->repository->find($id);
-        if (empty($[model])) \Redirect::back();
-
-        $this->layout->content = \View::make('[models].edit')->with('[model]', $[model]);
-    }
-
-    public function update($id)
-    {
-        $updated = $this->repository->update($id, \Input::except('_method', '_token'));
-
-        if ($updated->validator->success()) {
-            return \Redirect::route('[models].index')->with('success', $updated->validator->message);
-        }
-        else {
-            return \Redirect::back()->withErrors($updated->validator->errors)->withInput();
-        } # endif;
-    }
-
-    public function show($id)
-    {
-        $[model] = $this->repository->find($id);
-        if (empty($[model])) \Redirect::back();
-
-        $this->layout->content = \View::make('[models].show')->with('[model]', $[model]);
-    }
-
-    public function destroy($id)
-    {
-        $response = $this->repository->destroy($id);
-
-        if ($response->validator->success()) {
-            return Redirect::route('[models].index')->with('success', $response->validator->message);
-        }
-        else {
-            return Redirect::back()->withErrors($response->validator->errors)->withInput();
-        }
+        $this->repository = $repository;
     }
 }

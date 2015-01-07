@@ -8,7 +8,7 @@
     <div class=" form">
 [repeat]
         <div class="form-group">
-            {{ Form::label('[property]', '[Property]', [ 'class' => 'control-label col-md-3' ]) }}
+            {{ Form::label('[property]', trans('modules.[models].[property]'), [ 'class' => 'control-label col-md-3' ]) }}
             <div class="col-md-6">
                 {{ Form::text('[property]', $[model]->[property], [ 'class' => 'form-control' ]) }}
             </div>

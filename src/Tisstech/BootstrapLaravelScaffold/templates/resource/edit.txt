@@ -1,20 +1,20 @@
 @section('screen-title')
-    {{ trans('eloquent.models.[model]') }}
+     {{ trans('modules.[models].[models]') }}
     <small id="small-screen-title">Editar</small>
 @stop
 
 @section('content')
-    <div class="row">
-        <div class="col-md-12">
-            <section class="panel">
-                @include('[models].form', [
-                    'form_attributes' => [
-                        'method' => 'PUT',
-                        'class' =>'cmxform form-horizontal',
-                        'route' => [ '[models].update', $[model]->id ],
-                    ]
-                ])
-            </section>
-        </div>
+<div class="row">
+    <div class="col-md-12">
+        <section class="panel">
+            @include('[models].form', [
+                'form_attributes' => [
+                    'method' => 'PUT',
+                    'class' =>'cmxform form-horizontal',
+                    'route' => [ '[models].update', $[model]->id ],
+                ]
+            ])
+        </section>
     </div>
+</div>
 @stop
