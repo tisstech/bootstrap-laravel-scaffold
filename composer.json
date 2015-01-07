@@ -1,12 +1,12 @@
 {
-    "name": "wfsneto/bootstrap-laravel-scaffold",
+    "name": "tisstech/bootstrap-laravel-scaffold",
     "description": "Fastest way to rapidly scaffold a laravel application",
     "keywords": ["laravel", "package", "bootstrap", "scaffold", "command"],
     "license": "MIT",
     "authors": [
         {
-            "name": "wfsneto",
-            "email": "wfsneto@gmail.com"
+            "name": "tisstech",
+            "email": "tisstech@tisstech.com.br"
         }
     ],
     "require": {
@@ -22,7 +22,7 @@
         "classmap": [
         ],
         "psr-0": {
-            "Wfsneto\\BootstrapLaravelScaffold\\": "src/"
+            "Tisstech\\BootstrapLaravelScaffold\\": "src/"
         }
     },
     "minimum-stability": "dev"

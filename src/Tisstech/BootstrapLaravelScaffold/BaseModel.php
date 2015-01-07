@@ -1,4 +1,4 @@
-<?php namespace Wfsneto\BootstrapLaravelScaffold;
+<?php namespace Tisstech\BootstrapLaravelScaffold;
 
 
 class BaseModel

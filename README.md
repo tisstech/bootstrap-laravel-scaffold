@@ -6,10 +6,10 @@ Automatically generates the files you need to get up and running. Generates a de
 
 ## Installation
 
-Begin by installing this package through Composer. Edit your project's `composer.json` file to require `wfsneto/bootstrap-laravel-scaffold`
+Begin by installing this package through Composer. Edit your project's `composer.json` file to require `tisstech/bootstrap-laravel-scaffold`
 
     "require-dev": {
-        "wfsneto/bootstrap-laravel-scaffold": "dev-master"
+        "tisstech/bootstrap-laravel-scaffold": "dev-master"
     }
 
 Next, update Composer from the Terminal:
@@ -18,7 +18,7 @@ Next, update Composer from the Terminal:
 
 Once this operation completes, the final step is to add the service provider. Open `app/config/app.php`, and add a new item to the providers array.
 
-    'Wfsneto\BootstrapLaravelScaffold\BootstrapLaravelScaffoldServiceProvider'
+    'Tisstech\BootstrapLaravelScaffold\BootstrapLaravelScaffoldServiceProvider'
 
 That's it! You're all set to go. Run the `artisan` command from the Terminal to see the new `scaffold` command.
 
@@ -28,7 +28,7 @@ That's it! You're all set to go. Run the `artisan` command from the Terminal to 
 
 Configure all file directories, class names, view files, whether or not you want repository pattern, which css/js files to download, and you can completely customize view and layout files from within the templates folder! Be sure to run:
 
-`php artisan config:publish wfsneto/bootstrap-laravel-scaffold`
+`php artisan config:publish tisstech/bootstrap-laravel-scaffold`
 
 To include the config file within your config folder.
 
@@ -124,7 +124,7 @@ The seeder uses faker in order to randomly generate 10 rows in each table. It wi
 
 ## Bonus
 
-Want to go even FURTHER with the scaffold process?!?! Setup [foreman](https://github.com/Indatus/foreman), add wfsneto/bootstrap-laravel-scaffold to the require-dev section, setup an app file to copy from that adds the laravel scaffold service provider, setup a database file that sets up your database to copy from, and finally setup a models.txt file to copy from (example above). Save that scaffold file somewhere convenient.
+Want to go even FURTHER with the scaffold process?!?! Setup [foreman](https://github.com/Indatus/foreman), add tisstech/bootstrap-laravel-scaffold to the require-dev section, setup an app file to copy from that adds the laravel scaffold service provider, setup a database file that sets up your database to copy from, and finally setup a models.txt file to copy from (example above). Save that scaffold file somewhere convenient.
 
 Then, you can edit your bash file to include a new alias:
 

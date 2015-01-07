@@ -1,13 +1,13 @@
-<?php namespace Wfsneto\BootstrapLaravelScaffold;
+<?php namespace Tisstech\BootstrapLaravelScaffold;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 
-class ScaffoldUpdateCommand extends Command
+class ScaffoldCommand extends Command
 {
-    protected $name = 'scaffold:update';
+    protected $name = 'scaffold';
 
-    protected $description = "Update model and database schema based on changes to models file";
+    protected $description = "Makes layout, js/css, table, controller, model, views, seeds, and repository";
 
     public function __construct()
     {
@@ -16,13 +16,15 @@ class ScaffoldUpdateCommand extends Command
 
     public function fire()
     {
-        $this->info('Updating...');
-
         $scaffold = new Scaffold($this);
 
-        $scaffold->update();
+        $scaffold->setupLayoutFiles();
 
-        $this->info('Finishing...');
+        $scaffold->createLayout();
+
+        $scaffold->createModels();
+
+        $this->info('Please wait a few moments...');
 
         $this->call('clear-compiled');
 
