@@ -1,5 +1,5 @@
 <?php
-namespace Wfsneto\BootstrapLaravelScaffold;
+namespace Tisstech\BootstrapLaravelScaffold;
 
 use Illuminate\Console\Command;
 use Faker\Factory;
@@ -667,7 +667,7 @@ class Scaffold
     private function copyTemplateFiles()
     {
         if(!\File::isDirectory($this->configSettings['pathTo']['templates']))
-            $this->fileCreator->copyDirectory("vendor/wfsneto/bootstrap-laravel-scaffold/src/Wfsneto/BootstrapLaravelScaffold/templates/", $this->configSettings['pathTo']['templates']);
+            $this->fileCreator->copyDirectory("vendor/tisstech/bootstrap-laravel-scaffold/src/Tisstech/BootstrapLaravelScaffold/templates/", $this->configSettings['pathTo']['templates']);
     }
 
     /**
@@ -998,7 +998,7 @@ class Scaffold
         catch(FileNotFoundException $e)
         {
             $shortTemplate = substr($template, strpos($template, $this->configSettings["pathTo"]["templates"]) + strlen($this->configSettings["pathTo"]["templates"]),strlen($template)-strlen($this->configSettings["pathTo"]["templates"]));
-            $this->fileCreator->copyFile("vendor/wfsneto/bootstrap-laravel-scaffold/src/Wfsneto/BootstrapLaravelScaffold/templates/".$shortTemplate, $template);
+            $this->fileCreator->copyFile("vendor/tisstech/bootstrap-laravel-scaffold/src/Tisstech/BootstrapLaravelScaffold/templates/".$shortTemplate, $template);
             $fileContents = \File::get($template);
         }
 

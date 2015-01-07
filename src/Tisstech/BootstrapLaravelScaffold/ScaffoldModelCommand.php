@@ -1,13 +1,13 @@
-<?php namespace Wfsneto\BootstrapLaravelScaffold;
+<?php namespace Tisstech\BootstrapLaravelScaffold;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 
-class ScaffoldCommand extends Command
+class ScaffoldModelCommand extends Command
 {
-    protected $name = 'scaffold';
+    protected $name = 'scaffold:model';
 
-    protected $description = "Makes layout, js/css, table, controller, model, views, seeds, and repository";
+    protected $description = "Makes table, controller, model, views, seeds, and repository for model";
 
     public function __construct()
     {
@@ -17,10 +17,6 @@ class ScaffoldCommand extends Command
     public function fire()
     {
         $scaffold = new Scaffold($this);
-
-        $scaffold->setupLayoutFiles();
-
-        $scaffold->createLayout();
 
         $scaffold->createModels();
 

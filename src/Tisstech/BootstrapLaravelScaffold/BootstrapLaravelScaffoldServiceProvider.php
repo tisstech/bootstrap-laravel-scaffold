@@ -1,5 +1,5 @@
 <?php
-namespace Wfsneto\BootstrapLaravelScaffold;
+namespace Tisstech\BootstrapLaravelScaffold;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -19,7 +19,7 @@ class BootstrapLaravelScaffoldServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->package('wfsneto/bootstrap-laravel-scaffold');
+        $this->package('tisstech/bootstrap-laravel-scaffold');
     }
 
     /**

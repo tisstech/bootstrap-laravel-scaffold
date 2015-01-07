@@ -1,4 +1,4 @@
-<?php namespace Wfsneto\BootstrapLaravelScaffold;
+<?php namespace Tisstech\BootstrapLaravelScaffold;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
