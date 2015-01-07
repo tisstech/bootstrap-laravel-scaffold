@@ -76,7 +76,7 @@ return [
 
     'paths' => [
 
-        'templates' => 'app/templates',
+        'templates' => 'vendor/tisstech/bootstrap-laravel-scaffold/src/Tisstech/BootstrapLaravelScaffold/templates',
         'controllers' => 'app/controllers',
         'migrations' => 'app/database/migrations',
         'seeds' => 'app/database/seeds',
