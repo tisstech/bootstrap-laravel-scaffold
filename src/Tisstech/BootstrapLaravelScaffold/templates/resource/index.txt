@@ -16,37 +16,36 @@
                             {{ Form::actions('[models]', null, ['add']) }}
                         </div>
                         <div class="adv-table editable-table ">
-                            <table class="table table-striped table-hover table-bordered" id="editable-sample">
-                                <thead>
-                                    <tr>
-                                        [repeat]<th class="{{ Form::sortableClass('[models].[property]', Input::get('sortBy'), Input::get('orderBy')) }}">
-                                            {{ Form::sortableLink(trans('modules.[models].[property]'), '[models].[property]') }}
-                                        </th>
-                                        [/repeat]
-                                        <th>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($[models] as $[model])
+                            @if ($[models]->isEmpty())
+                                <p class="text-center">Nenhum registro encontrado</p>
+                                    @else
+                                <table class="table table-striped table-hover table-bordered" id="editable-sample">
+                                    <thead>
                                         <tr>
-                                            [repeat]<td>{{ $[model]->[property] }}</td>
+                                            [repeat]<th class="{{ Form::sortableClass('[models].[property]', Input::get('sortBy'), Input::get('orderBy')) }}">
+                                                {{ Form::sortableLink(trans('modules.[models].[property]'), '[models].[property]') }}
+                                            </th>
                                             [/repeat]
-                                            <td>
-                                                {{ Form::open(array('url' => array('[models]', $[model]->id), 'method' => 'delete', 'class' => 'form-inline')) }}
-                                                    {{ Form::actions('[models]', $[model]->id) }}
-                                                {{ Form::close() }}
-                                            </td>
+                                            <th>Ações</th>
                                         </tr>
-                                    @endforeach
+                                    </thead>
+                                    <tbody>
+                                        @foreach($[models] as $[model])
+                                            <tr>
+                                                [repeat]<td>{{ $[model]->[property] }}</td>
+                                                [/repeat]
+                                                <td>
+                                                    {{ Form::open(array('url' => array('[models]', $[model]->id), 'method' => 'delete', 'class' => 'form-inline')) }}
+                                                        {{ Form::actions('[models]', $[model]->id) }}
+                                                    {{ Form::close() }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
 
-                                    @if ($[models]->isEmpty())
-                                        <tr>
-                                            <td colspan="1">Nenhum registro encontrado</td>
-                                        </tr>
-                                    @endif
-                                </tbody>
-                            </table>
-                            @include('layouts.pagination', ['object' => $[models]])
+                                    </tbody>
+                                </table>
+                                @include('layouts.pagination', ['object' => $[models]])
+                            @endif
                         </div>
                     </div>
                 </div>

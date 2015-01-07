@@ -10,7 +10,7 @@
             <div class="panel-body">
                 <div class="form form-horizontal">
                     [repeat]<div class="form-group">
-                        {{ Form::label('[property]', '[Property]', array('class' => 'control-label col-lg-2')) }}
+                        {{ Form::label('[property]', trans('modules.[models].[property]'), array('class' => 'control-label col-lg-2')) }}
                         <div class="col-lg-4">
                             {{ Form::label('[property]', $[model]->[property], array('class' => 'form-control-static')) }}
                         </div>
