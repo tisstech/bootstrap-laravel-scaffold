@@ -443,7 +443,7 @@ class Scaffold
                 if($this->configSettings['useRepository'])
                 {
                     $this->createRepository();
-                    $this->createRepositoryInterface();
+                    //$this->createRepositoryInterface();
                     $this->putRepositoryFolderInStartFiles();
                 }
 
