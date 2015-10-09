@@ -9,12 +9,8 @@
         <section class="panel">
             <div class="panel-body">
                 <div class="form form-horizontal">
-                    [repeat]<div class="form-group">
-                        {{ Form::label('[property]', trans('modules.[models].[property]'), array('class' => 'control-label col-lg-2')) }}
-                        <div class="col-lg-4">
-                            {{ Form::label('[property]', $[model]->[property], array('class' => 'form-control-static')) }}
-                        </div>
-                    </div>
+                    [repeat]
+                    @include('shared/_labels_show', [ 'label' => trans('modules.[models].[property]'), 'text' => $[model]->[property]  ])
                     [/repeat]
                 </div>
             </div>
